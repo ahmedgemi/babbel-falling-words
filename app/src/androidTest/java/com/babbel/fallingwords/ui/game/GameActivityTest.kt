@@ -1,6 +1,5 @@
 package com.babbel.fallingwords.ui.game
 
-import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -13,7 +12,6 @@ import com.babbel.fallingwords.AnimationsRule
 import com.babbel.fallingwords.Constants
 import com.babbel.fallingwords.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -24,6 +22,7 @@ import org.junit.runner.RunWith
 @ExperimentalCoroutinesApi
 class GameActivityTest {
 
+    //disable animation with Espresso testing
     @get:Rule
     val animationsRule = AnimationsRule()
 
