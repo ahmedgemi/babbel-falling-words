@@ -120,15 +120,21 @@ class GameViewModel @Inject constructor(
 
         currentWordIndex++
 
-        //generate random number to decide to show the correct translation or wrong one
-        val rnd = if(wordsList.size > 1) (0..wordsList.size).random() else 0
-        currentQuestion = if(rnd%2 == 0){
+        if(currentWordIndex == wordsList.size-1){ //handle last question in the list scenario
             //use the correct translation
             QuestionModel(wordsList[currentWordIndex].textEng,wordsList[currentWordIndex].textSpa)
         }
         else {
-            //use wrong translation
-            QuestionModel(wordsList[currentWordIndex].textEng,wordsList[rnd].textSpa)
+            //generate random number to decide to show the correct translation or wrong one
+            val rnd = if(wordsList.size > 1) (0..wordsList.size-1).random() else 0
+            currentQuestion = if(rnd%2 == 0){
+                //use the correct translation
+                QuestionModel(wordsList[currentWordIndex].textEng,wordsList[currentWordIndex].textSpa)
+            }
+            else {
+                //use wrong translation
+                QuestionModel(wordsList[currentWordIndex].textEng,wordsList[rnd].textSpa)
+            }
         }
 
         questionLiveData.value = currentQuestion
