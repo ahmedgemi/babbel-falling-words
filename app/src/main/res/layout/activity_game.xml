@@ -13,8 +13,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/green"
-        android:text="Correct"
-        app:layout_constraintWidth_percent="0.25"
+        android:text="@string/correct"
+        app:layout_constraintWidth_percent="0.3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Wrong"
+        android:text="@string/wrong"
         android:backgroundTint="@color/red"
-        app:layout_constraintWidth_percent="0.25"
+        app:layout_constraintWidth_percent="0.3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -94,14 +94,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Score:" />
+                    android:text="@string/score" />
 
                 <TextView
                     android:id="@+id/tv_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="0"
+                    android:text=""
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
@@ -109,14 +109,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Lives:" />
+                    android:text="@string/lives" />
 
                 <TextView
                     android:id="@+id/tv_lives"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="3"
+                    android:text=""
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
             </LinearLayout>
