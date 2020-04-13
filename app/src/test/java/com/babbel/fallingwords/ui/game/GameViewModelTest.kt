@@ -3,6 +3,7 @@ package com.babbel.fallingwords.ui.game
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.babbel.fallingwords.Constants
 import com.babbel.fallingwords.FakeWordsDataSource
+import com.babbel.fallingwords.data.ResultState
 import com.babbel.fallingwords.getOrAwaitValue
 import com.babbel.fallingwords.repo.WordsRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,19 +35,18 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `test loading word list after create viewModel instance`() = runBlockingTest {
-        val fakeList = fakeWordsDataSource.fetchWords()
-        assertEquals(viewModel.wordsList.isNotEmpty(),true)
-        assertEquals(viewModel.wordsList.size,fakeList.size)
-    }
-
-    @Test
     fun `test viewModel liveDatas initialized with default values`() = runBlockingTest {
         val lives = viewModel.livesLiveData.getOrAwaitValue()
         val score = viewModel.scoreLiveData.getOrAwaitValue()
 
         assertEquals(lives,Constants.LIVES_COUNT)
         assertEquals(score,0)
+    }
+
+    @Test
+    fun `test loading word list after create viewModel instance`() = runBlockingTest {
+        val result = fakeWordsDataSource.fetchWords() as ResultState.Success
+        assertEquals(viewModel.wordsList.size,result.data.size)
     }
 
     @Test
@@ -78,8 +78,9 @@ class GameViewModelTest {
             assertEquals(lives,Constants.LIVES_COUNT-i-1)
         }
 
-        val score = viewModel.gameOverLiveData.getOrAwaitValue()
-        assertEquals(score,0)
+        //test game is over after losing all lives
+        val result = viewModel.gameOverLiveData.getOrAwaitValue()
+        assertEquals(result,0)
     }
 
     @Test
@@ -90,7 +91,8 @@ class GameViewModelTest {
             assertEquals(lives,Constants.LIVES_COUNT-i-1)
         }
 
-        val score = viewModel.gameOverLiveData.getOrAwaitValue()
-        assertEquals(score,0)
+        //test game is over after losing all lives
+        val result = viewModel.gameOverLiveData.getOrAwaitValue()
+        assertEquals(result,0)
     }
 }
