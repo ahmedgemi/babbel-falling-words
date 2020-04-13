@@ -1,5 +1,8 @@
 package com.babbel.fallingwords.data
 
+/**
+ * This class for fetching data status between app layers (View, ViewModel, Data-Layer)
+ */
 sealed class ResultState<out R> {
 
     data class Success<out T>(val data: T) : ResultState<T>()

@@ -19,7 +19,7 @@ class GameResultSheet (context: Context, score: Int): BottomSheetDialog(context)
         setCancelable(false)
         setupWindow()
 
-        binding.tvScore.text = score.toString()
+        binding.tvResult.text = score.toString()
         binding.btnPlay.setOnClickListener {
             dismiss()
             val intent = Intent(context,GameActivity::class.java)
@@ -28,6 +28,9 @@ class GameResultSheet (context: Context, score: Int): BottomSheetDialog(context)
         }
     }
 
+    /**
+     * setup action sheet window properties
+     */
     private fun setupWindow(){
         if (window != null) {
             val attributes = window?.attributes

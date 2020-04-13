@@ -7,10 +7,10 @@ import com.babbel.fallingwords.data.source.WordsLocalDataSource
 import javax.inject.Inject
 
 class WordsRepository @Inject constructor(
-    val dataSource: WordsDataSource
+    private val dataSource: WordsDataSource
 ){
 
-    suspend fun fetchWords(): List<WordModel>{
+    suspend fun fetchWords(): ResultState<List<WordModel>>{
         return dataSource.fetchWords()
     }
 }

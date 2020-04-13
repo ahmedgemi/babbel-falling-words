@@ -14,7 +14,7 @@ import com.babbel.fallingwords.databinding.ActivityGameBinding
 
 class GameActivity : BaseActivity<ActivityGameBinding>() {
 
-    private lateinit var viewModel: GameViewModel
+    lateinit var viewModel: GameViewModel
 
     override fun getViewBinding(): ActivityGameBinding {
         return ActivityGameBinding.inflate(layoutInflater)
@@ -34,6 +34,9 @@ class GameActivity : BaseActivity<ActivityGameBinding>() {
             cancelAnimation()
             viewModel.onWrongTransClicked()
         }
+
+        binding.animationView.visibility =
+            if(isRunningTest) View.GONE else View.VISIBLE
     }
 
     private fun initViewModel(){
@@ -47,12 +50,16 @@ class GameActivity : BaseActivity<ActivityGameBinding>() {
             binding.tvScore.text = score.toString()
         })
 
-        viewModel.lifesLiveData.observe(this, Observer {lives->
+        viewModel.livesLiveData.observe(this, Observer { lives->
             binding.tvLives.text = lives.toString()
         })
 
         viewModel.gameOverLiveData.observe(this, Observer {score->
             GameResultSheet(this,score).show()
+        })
+
+        viewModel.errorLiveData.observe(this, Observer {
+            showErrorMessage(it)
         })
     }
 
@@ -74,14 +81,25 @@ class GameActivity : BaseActivity<ActivityGameBinding>() {
 
         binding.tvWord.text = question.question
         binding.layoutMeteor.tvTranslation.text = question.translation
-        binding.layoutMeteor.root.startAnimation(animation)
         binding.layoutMeteor.root.visibility = View.VISIBLE
+
+        if(!isRunningTest)
+            binding.layoutMeteor.root.startAnimation(animation)
     }
 
     private fun cancelAnimation(){
         binding.layoutMeteor.root.visibility = View.GONE
         binding.layoutMeteor.tvTranslation.text = ""
-        binding.layoutMeteor.root.animation.setAnimationListener(null)
+        binding.layoutMeteor.root.animation?.setAnimationListener(null)
         binding.layoutMeteor.root.clearAnimation()
+    }
+
+    val isRunningTest : Boolean by lazy {
+        try {
+            Class.forName("androidx.test.espresso.Espresso")
+            true
+        } catch (e: ClassNotFoundException) {
+            false
+        }
     }
 }

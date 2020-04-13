@@ -9,6 +9,7 @@ class GameApp : Application() {
 
     companion object{
         var applicationComponent: ApplicationComponent? = null
+            get() = field
     }
 
     override fun onCreate() {

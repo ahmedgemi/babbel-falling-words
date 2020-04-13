@@ -9,19 +9,26 @@ import com.babbel.fallingwords.di.application.ApplicationContext
 import com.google.gson.Gson
 import javax.inject.Inject
 
-//@ApplicationContext
 class WordsLocalDataSource @Inject constructor(
-  val appContext: Context
+  private val appContext: Context
 ) : WordsDataSource{
 
-    override suspend fun fetchWords(): List<WordModel> {
-        val inputStream = appContext.resources.openRawResource(R.raw.words_dataset)
-        val buffer = ByteArray(inputStream.available())
-        while (inputStream.read(buffer) !== -1);
-        val json = String(buffer)
+    /**
+     * Load words dataset from resources
+     */
+    override suspend fun fetchWords(): ResultState<List<WordModel>> {
+        try {
+            val inputStream = appContext.resources.openRawResource(R.raw.words_dataset)
+            val buffer = ByteArray(inputStream.available())
+            while (inputStream.read(buffer) !== -1);
+            val json = String(buffer)
 
-        val list = Gson().fromJson(json, WordListModel::class.java)
-        return list
+            val list = Gson().fromJson(json, WordListModel::class.java)
+            return ResultState.Success(list)
+        }
+        catch (e: Exception){
+            return ResultState.Error(e)
+        }
     }
 
 }

@@ -11,13 +11,28 @@ import com.babbel.fallingwords.di.activity.DaggerActivityComponent
 import com.babbel.fallingwords.di.viewmodel.ViewModelFactory
 import javax.inject.Inject
 
+/**
+ * This class represent the base Activity contains common components initialization for all activities
+ * <T> providing the ViewBinding generic type
+ */
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
+    /**
+     * viewModelFactory for initializing ViewModel instance with Dagger2
+     */
     @Inject
     protected lateinit var viewModelFactory: ViewModelFactory
 
+    /**
+     * viewBinding instance of activity layout
+     */
     protected lateinit var binding: T
+
+    /**
+     * @return ViewBinding instance of the activity
+     */
     protected abstract fun getViewBinding() : T
+
     protected lateinit var daggerComponent: ActivityComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
