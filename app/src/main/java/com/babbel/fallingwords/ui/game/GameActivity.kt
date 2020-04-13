@@ -35,29 +35,39 @@ class GameActivity : BaseActivity<ActivityGameBinding>() {
             viewModel.onWrongTransClicked()
         }
 
+        //disable animation in Espresso testing
         binding.animationView.visibility =
             if(isRunningTest) View.GONE else View.VISIBLE
     }
 
+    /**
+     * initialize viewModel and observe game liveData controls
+     */
     private fun initViewModel(){
         viewModel = ViewModelProvider(this,viewModelFactory).get(GameViewModel::class.java)
 
+        //observe new question (word and translation)
         viewModel.questionLiveData.observe(this, Observer {
             startAnimation(it)
         })
 
+        //observe user score updates
         viewModel.scoreLiveData.observe(this, Observer {score->
             binding.tvScore.text = score.toString()
         })
 
+        //observe number of lives remaining for the user
         viewModel.livesLiveData.observe(this, Observer { lives->
             binding.tvLives.text = lives.toString()
         })
 
+        //observe when game is over
         viewModel.gameOverLiveData.observe(this, Observer {score->
+            cancelAnimation()
             GameResultSheet(this,score).show()
         })
 
+        //observe error messages
         viewModel.errorLiveData.observe(this, Observer {
             showErrorMessage(it)
         })
@@ -71,6 +81,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>() {
             }
 
             override fun onAnimationEnd(p0: Animation?) {
+                //onAnimationEnd means user didn't choose any answer
                 cancelAnimation()
                 viewModel.onNoAnswer()
             }
@@ -83,6 +94,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>() {
         binding.layoutMeteor.tvTranslation.text = question.translation
         binding.layoutMeteor.root.visibility = View.VISIBLE
 
+        //disable animation in Espresso testing
         if(!isRunningTest)
             binding.layoutMeteor.root.startAnimation(animation)
     }
@@ -94,6 +106,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>() {
         binding.layoutMeteor.root.clearAnimation()
     }
 
+    //check if activity running in Espresso test to disable animation
     val isRunningTest : Boolean by lazy {
         try {
             Class.forName("androidx.test.espresso.Espresso")
