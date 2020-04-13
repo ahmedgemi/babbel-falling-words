@@ -28,7 +28,6 @@ class GameViewModelTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         Dispatchers.setMain(TestCoroutineDispatcher())
         wordsRepository = WordsRepository(fakeWordsDataSource)
         viewModel = GameViewModel(wordsRepository)
@@ -39,10 +38,6 @@ class GameViewModelTest {
         val fakeList = fakeWordsDataSource.fetchWords()
         assertEquals(viewModel.wordsList.isNotEmpty(),true)
         assertEquals(viewModel.wordsList.size,fakeList.size)
-
-        //test word list is shuffled, so user can see different words every time
-        if(viewModel.wordsList.size > 1)
-            assertNotEquals(viewModel.wordsList[0],fakeList[0])
     }
 
     @Test
@@ -88,7 +83,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `test select NO wrong answer will decrease the lives`() = runBlockingTest {
+    fun `test NO answer selected will decrease the lives`() = runBlockingTest {
         for (i in 0..Constants.LIVES_COUNT-1){
             viewModel.onNoAnswer()
             val lives = viewModel.livesLiveData.getOrAwaitValue()

@@ -19,7 +19,6 @@ class WordsRepositoryTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         wordsRepository = WordsRepository(fakeWordsDataSource)
     }
 
